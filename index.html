@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luxe Inventory — Premium Cosmetics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <style>
+:root{
+  --sage:#5c8bbf;--sage-d:#3f6a9a;--gold:#c9b37e;--gold-l:#e6d9ab;
+  --navy:#1f2f45;--navy-2:#2e4764;--cream:#f1f6fc;--text:#1a1a1a;--muted:#5d6b60;
+  --border:rgba(31,47,69,0.10);--border-glow:rgba(92,139,191,0.38);
+  --green:#1a7a4c;--red:#c0392b;--amber:#b8860b;--blue:#2f6f8f;--rose:#b9707a;
+  --surface:#ffffff;--radius:18px;
+  --font:"Inter",system-ui,sans-serif;--serif:"Playfair Display",Georgia,serif;
+  --glass:rgba(31,47,69,0.80);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);color:var(--text);min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(180deg,#f1f6fc 0%,#e3edf8 100%)}
+body.intro-lock{overflow:hidden}
+
+/* reveal after intro */
+.rv,.sidebar,.aside,.stat{opacity:0}
+body.ready .rv{animation:rise .9s cubic-bezier(.2,.7,.2,1) var(--d,0s) forwards}
+body.ready .sidebar,body.ready .aside{animation:fadeIn .9s ease .5s forwards}
+body.ready .stat{animation:rise .8s ease forwards}
+body.ready .stat:nth-child(1){animation-delay:.6s}body.ready .stat:nth-child(2){animation-delay:.7s}
+body.ready .stat:nth-child(3){animation-delay:.8s}body.ready .stat:nth-child(4){animation-delay:.9s}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 2rem;background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);
+  border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 2px 20px rgba(31,47,69,.25)}
+.brand{display:flex;align-items:center;gap:.75rem}
+.brand-mark{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;
+  box-shadow:0 0 0 2px rgba(255,255,255,.18),0 4px 20px rgba(92,139,191,.6)}
+.brand h1{font-family:var(--serif);font-size:1.45rem;font-weight:600;letter-spacing:.05em;color:#fff}
+.brand small{display:block;font-size:.6rem;color:var(--gold-l);letter-spacing:.32em;text-transform:uppercase;margin-top:-2px}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.search-wrap{position:relative;display:flex;align-items:center}
+.search-wrap .search-ico{position:absolute;left:.85rem;color:rgba(255,255,255,.55);font-size:.9rem;pointer-events:none}
+.search-input{width:240px;padding:.5rem 2.2rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;color:#fff;font-family:var(--font);font-size:.85rem;transition:border-color .2s,width .25s,box-shadow .2s}
+.search-input::placeholder{color:rgba(255,255,255,.55)}
+.search-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,179,126,.2);width:280px}
+.search-clear{position:absolute;right:.55rem;background:transparent;border:none;color:rgba(255,255,255,.6);cursor:pointer;
+  font-size:.85rem;padding:.2rem .35rem;border-radius:50%;display:none;line-height:1}
+.search-clear:hover{color:#fff}.search-clear.show{display:block}
+.live-badge{display:flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:600;letter-spacing:.06em;color:#7dcea0;
+  background:rgba(125,206,160,.12);border:1px solid rgba(125,206,160,.3);padding:.3rem .8rem;border-radius:999px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#7dcea0;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(125,206,160,.5)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(125,206,160,0)}}
+.clock{font-variant-numeric:tabular-nums;font-size:.88rem;color:rgba(255,255,255,.7);letter-spacing:.04em}
+.clock strong{color:var(--gold-l);font-weight:500}
+.menu-btn{display:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;width:38px;height:38px;
+  border-radius:10px;font-size:1.1rem;cursor:pointer}
+
+/* hero front page */
+.hero-banner{position:relative;height:460px;overflow:hidden;background:var(--navy)}
+.hero-banner .slides{position:absolute;inset:0}
+.hero-banner .slide{position:absolute;inset:0;opacity:0;animation:kb 24s linear infinite;animation-play-state:paused}
+body.ready .hero-banner .slide{animation-play-state:running}
+.slide:nth-child(1){animation-delay:0s;background:radial-gradient(circle at 76% 48%,rgba(201,179,126,.42),transparent 46%),linear-gradient(120deg,#17243a,#2c4565)}
+.slide:nth-child(2){animation-delay:6s;background:radial-gradient(circle at 76% 48%,rgba(217,143,154,.34),transparent 46%),linear-gradient(120deg,#1a2740,#365275)}
+.slide:nth-child(3){animation-delay:12s;background:radial-gradient(circle at 76% 48%,rgba(143,184,230,.42),transparent 46%),linear-gradient(120deg,#172438,#2f4d70)}
+.slide:nth-child(4){animation-delay:18s;background:radial-gradient(circle at 76% 48%,rgba(230,217,171,.34),transparent 46%),linear-gradient(120deg,#1b2a40,#33506f)}
+.slide .art{position:absolute;right:7%;top:8%;bottom:6%;width:44%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.4))}
+.slide .art svg{width:100%;height:100%;display:block}
+@keyframes kb{0%{opacity:0;transform:scale(1.1)}4%{opacity:1}20%{opacity:1;transform:scale(1.02)}24%{opacity:0;transform:scale(1.01)}100%{opacity:0;transform:scale(1.01)}}
+.hero-banner::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(100deg,rgba(20,32,48,.94) 0%,rgba(63,106,154,.55) 42%,rgba(20,32,48,.05) 100%)}
+.hero-banner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:130px;z-index:1;background:linear-gradient(to top,rgba(20,32,48,.7),transparent)}
+.hero-banner .inner{position:relative;z-index:3;height:100%;max-width:1500px;margin:0 auto;padding:0 2rem;display:flex;flex-direction:column;justify-content:center}
+.eyebrow{display:inline-flex;align-items:center;gap:.8rem;color:var(--gold-l);font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;font-weight:600}
+.eyebrow::before{content:"";width:46px;height:1px;background:var(--gold-l)}
+.hero-banner h2{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.9rem);font-weight:500;line-height:1.1;margin:1rem 0 .9rem;max-width:720px;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.hero-banner h2 em{font-style:italic;color:var(--gold-l)}
+.hero-banner p{max-width:500px;font-size:1.05rem;line-height:1.6;color:rgba(255,255,255,.82)}
+.hero-cta{display:flex;gap:.9rem;margin-top:1.8rem;flex-wrap:wrap}
+.btn-hero{padding:.85rem 1.8rem;border-radius:999px;font-size:.9rem;letter-spacing:.04em;border:none;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .25s}
+.btn-hero.solid{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:#fff;box-shadow:0 10px 30px rgba(92,139,191,.5)}
+.btn-hero.solid:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(92,139,191,.65)}
+.btn-hero.line{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.btn-hero.line:hover{background:#fff;color:var(--navy)}
+
+/* collections + houses */
+.dest{max-width:1500px;margin:0 auto;padding:3.4rem 2rem .6rem}
+.dest-head{display:flex;align-items:flex-end;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.dest-head small{display:block;color:var(--sage);font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;font-weight:700;margin-bottom:.4rem}
+.dest-head h2{font-family:var(--serif);font-size:2.2rem;font-weight:600;color:var(--navy)}
+.dest-head p{color:var(--muted);font-size:.9rem;max-width:340px}
+.dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.dest-card{position:relative;height:300px;border-radius:22px;overflow:hidden;cursor:pointer;
+  box-shadow:0 14px 40px rgba(31,47,69,.18);transition:transform .4s,box-shadow .4s;background:var(--navy)}
+.dest-card:hover{transform:translateY(-8px);box-shadow:0 24px 54px rgba(31,47,69,.3)}
+.dest-card .art{position:absolute;inset:0;padding:1.4rem 1rem 3.6rem;transition:transform 1s ease}
+.dest-card:hover .art{transform:scale(1.09)}
+.dest-card .art svg{width:100%;height:100%;display:block}
+.dest-card.c0{background:radial-gradient(circle at 50% 40%,rgba(201,179,126,.5),transparent 60%),linear-gradient(170deg,#1f2f45,#3b5a80)}
+.dest-card.c1{background:radial-gradient(circle at 50% 40%,rgba(217,143,154,.45),transparent 60%),linear-gradient(170deg,#1f2f45,#47607f)}
+.dest-card.c2{background:radial-gradient(circle at 50% 40%,rgba(143,184,230,.5),transparent 60%),linear-gradient(170deg,#18283d,#3b5a80)}
+.dest-card.c3{background:radial-gradient(circle at 50% 40%,rgba(230,217,171,.42),transparent 60%),linear-gradient(170deg,#1f2f45,#52698a)}
+.dest-card .cap{position:absolute;left:0;right:0;bottom:0;padding:2.4rem 1.3rem 1.2rem;color:#fff;background:linear-gradient(to top,rgba(14,22,34,.9),transparent)}
+.dest-card .cap b{display:block;font-family:var(--serif);font-size:1.45rem;font-weight:600}
+.dest-card .cap small{color:var(--gold-l);letter-spacing:.24em;text-transform:uppercase;font-size:.64rem}
+.houses{max-width:1500px;margin:1.6rem auto 0;padding:0 2rem}
+.houses-inner{display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;padding:1rem 1.4rem;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid var(--border)}
+.houses-inner small{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--sage)}
+.houses-inner span{font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--navy);cursor:pointer;transition:color .2s}
+.houses-inner span:hover{color:var(--sage)}
+
+/* layout */
+.shell{display:grid;grid-template-columns:220px 1fr 300px;max-width:1500px;margin:0 auto;align-items:start;min-height:70vh}
+.sidebar{position:sticky;top:66px;padding:1.5rem 1rem;background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-right:1px solid var(--border);min-height:calc(100vh - 66px)}
+.nav-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);padding:0 .75rem;margin:1.15rem 0 .4rem}
+.nav-label:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:.65rem;width:100%;padding:.7rem .85rem;border:none;background:transparent;color:var(--muted);
+  font-family:var(--font);font-size:.9rem;font-weight:500;border-radius:10px;cursor:pointer;transition:all .2s;text-align:left}
+.nav-item:hover{color:var(--navy);background:rgba(31,47,69,.05)}
+.nav-item.active{color:var(--sage-d);background:linear-gradient(90deg,rgba(92,139,191,.16),rgba(92,139,191,.02));border-left:3px solid var(--sage);font-weight:600}
+.nav-item .ico{font-size:1.05rem;width:1.35rem;text-align:center}
+.nav-item .badge{margin-left:auto;font-size:.7rem;background:var(--red);color:#fff;padding:.1rem .45rem;border-radius:999px;font-weight:600;min-width:1.3rem;text-align:center}
+
+.main{padding:1.75rem 2rem 2.5rem;min-width:0}
+.page{display:none;animation:fadeUp .35s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
+.page-head h2{font-family:var(--serif);font-size:1.85rem;font-weight:600;color:var(--navy)}
+.page-head h2::after{content:"";display:block;width:48px;height:3px;margin-top:.55rem;border-radius:2px;background:linear-gradient(90deg,var(--sage),var(--gold))}
+.page-head p{color:var(--muted);font-size:.88rem;margin-top:.5rem}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.75rem}
+.stat{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#f6f9fd);border:1px solid var(--border);border-radius:18px;
+  padding:1.25rem 1.35rem;box-shadow:0 8px 28px rgba(31,47,69,.07);transition:border-color .3s}
+.stat:hover{border-color:var(--border-glow)}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold))}
+.stat .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+.stat .num{font-family:var(--serif);font-size:2rem;font-weight:600;margin-top:.3rem;font-variant-numeric:tabular-nums;color:var(--navy)}
+.stat.s2 .num{color:var(--rose)}.stat.s3 .num{color:var(--amber)}.stat.s4 .num{color:var(--sage-d)}
+.stat .sub{font-size:.75rem;color:var(--muted);margin-top:.3rem}
+.stock-bar{height:4px;background:rgba(31,47,69,.08);border-radius:2px;margin-top:.6rem;overflow:hidden}
+.stock-bar-fill{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.22,1,.36,1)}
+
+/* product cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.15rem}
+.pcard{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 8px 30px rgba(31,47,69,.08);transition:all .25s}
+.pcard:hover{border-color:var(--border-glow);transform:translateY(-4px);box-shadow:0 22px 50px rgba(31,47,69,.2)}
+.pcard-art{height:170px;position:relative;overflow:hidden}
+.pcard-art svg{width:100%;height:100%;display:block;transition:transform .8s ease}
+.pcard:hover .pcard-art svg{transform:scale(1.08)}
+.pcard-art.t0{background:radial-gradient(circle at 50% 42%,#fff 0,#dde9f5 78%)}
+.pcard-art.t1{background:radial-gradient(circle at 50% 42%,#fff 0,#eee6cf 78%)}
+.pcard-art.t2{background:radial-gradient(circle at 50% 42%,#fff 0,#f0dedb 78%)}
+.pcard-art.t3{background:radial-gradient(circle at 50% 42%,#fff 0,#e0ebf3 78%)}
+.pcard-art .tag{position:absolute;top:.7rem;left:.8rem;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--sage-d);
+  background:rgba(255,255,255,.8);padding:.2rem .55rem;border-radius:999px}
+.pcard-top{padding:1rem 1.25rem .85rem;border-bottom:1px solid var(--border)}
+.pcard-name{font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--navy)}
+.pcard-brand{color:var(--muted);font-size:.8rem;margin-top:.15rem}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+.chip{font-size:.68rem;font-weight:600;padding:.18rem .55rem;border-radius:999px;background:rgba(31,47,69,.05);color:var(--muted);border:1px solid var(--border)}
+.chip.gold{background:rgba(201,179,126,.2);color:#8a6f2e;border-color:rgba(201,179,126,.4)}
+.chip.rose{background:rgba(185,112,122,.12);color:var(--rose);border-color:rgba(185,112,122,.28)}
+.pcard-body{padding:1rem 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.fld .k{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.fld .v{font-weight:600;font-size:.95rem;margin-top:.1rem;font-variant-numeric:tabular-nums}
+.fld .v.low{color:var(--red)}.fld .v.ok{color:var(--green)}.fld .v.warn{color:var(--amber)}
+.pcard-foot{padding:.75rem 1.25rem 1.1rem}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem 1.15rem;border:none;border-radius:10px;
+  font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-gold{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:#fff;box-shadow:0 6px 18px rgba(92,139,191,.3)}
+.btn-gold:hover{background:linear-gradient(135deg,#356093,#2d5079);transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--navy)}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage-d)}
+.btn-green{background:rgba(26,122,76,.12);color:var(--green);border:1px solid rgba(26,122,76,.3)}
+.btn-green:hover{background:var(--green);color:#fff}
+.btn-amber{background:rgba(184,134,11,.12);color:var(--amber);border:1px solid rgba(184,134,11,.3)}
+.btn-amber:hover{background:var(--amber);color:#fff}
+.btn-danger{background:transparent;border:1.5px solid rgba(192,57,43,.4);color:var(--red);padding:.35rem .7rem;font-size:.78rem}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-sm{padding:.4rem .85rem;font-size:.8rem}.btn-block{width:100%}
+
+/* tables + forms */
+.tcard{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 8px 30px rgba(31,47,69,.07)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:.9rem 1.15rem;background:linear-gradient(90deg,var(--navy),var(--navy-2));color:rgba(255,255,255,.88);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+td{padding:.85rem 1.15rem;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(92,139,191,.04)}
+.fcard{background:#fff;border:1px solid var(--border);border-radius:20px;padding:1.6rem;max-width:600px;box-shadow:0 8px 30px rgba(31,47,69,.07)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.35rem}.fgrid .full{grid-column:1/-1}
+label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:.35rem;letter-spacing:.03em}
+input,select{width:100%;padding:.7rem .9rem;background:#f6f9fd;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:.9rem;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--sage);box-shadow:0 0 0 3px rgba(92,139,191,.12);background:#fff}
+select option{background:#fff;color:var(--text)}
+.topbar .search-input{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.18)}
+
+.search-meta{font-size:.8rem;color:var(--muted);margin-bottom:1rem}.search-meta strong{color:var(--sage-d);font-weight:700}
+.filter-bar{display:flex;flex-wrap:wrap;gap:.65rem;align-items:flex-end;margin-bottom:1.15rem;padding:1rem 1.15rem;background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 30px rgba(31,47,69,.06)}
+.filter-bar .fg{display:flex;flex-direction:column;gap:.3rem;min-width:130px}
+.filter-bar .fg label{font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;margin:0}
+.filter-bar select{padding:.5rem .7rem;font-size:.82rem;min-width:140px;cursor:pointer}
+.filter-bar .filter-actions{display:flex;gap:.45rem;align-items:center;margin-left:auto}
+.filter-chip-active{font-size:.72rem;color:var(--sage-d);background:rgba(92,139,191,.12);border:1px solid rgba(92,139,191,.28);padding:.25rem .6rem;border-radius:999px;font-weight:600}
+
+/* live feed */
+.aside{position:sticky;top:66px;align-self:start;border-left:1px solid var(--border);background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  padding:1.5rem 1.15rem;overflow-y:auto;max-height:calc(100vh - 66px);min-height:calc(100vh - 66px)}
+.aside h3{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--navy);margin-bottom:.25rem}
+.aside .sub{font-size:.75rem;color:var(--muted);margin-bottom:1.15rem}
+.feed{display:flex;flex-direction:column;gap:.65rem}
+.feed-item{background:#fff;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:12px;padding:.8rem .95rem;animation:slideIn .4s ease;font-size:.82rem}
+@keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+.feed-item .time{font-size:.68rem;color:var(--muted);margin-bottom:.25rem;font-variant-numeric:tabular-nums}
+.feed-item .msg{line-height:1.4}
+.feed-item.ok{border-left-color:var(--green)}.feed-item.ok .msg{color:var(--green)}
+.feed-item.err{border-left-color:var(--red)}.feed-item.err .msg{color:var(--red)}
+.feed-item.info .msg{color:var(--blue)}
+.feed-item.warn{border-left-color:var(--amber)}.feed-item.warn .msg{color:var(--amber)}
+.refresh-bar{height:3px;background:rgba(31,47,69,.07);border-radius:2px;margin-bottom:1.25rem;overflow:hidden}
+.refresh-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sage),var(--gold));border-radius:2px;transition:width .1s linear}
+.empty{text-align:center;padding:3.5rem 1rem;color:var(--muted)}.empty .big{font-size:2.4rem;margin-bottom:.5rem;opacity:.5}
+
+/* modal + toast */
+.overlay{position:fixed;inset:0;background:rgba(20,32,48,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:200;padding:1rem}
+.overlay.open{display:flex}
+.modal{background:#fff;border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:20px;padding:1.75rem;width:100%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:fadeUp .25s ease}
+.modal h3{font-family:var(--serif);font-size:1.4rem;color:var(--navy);margin-bottom:.3rem}
+.modal .sub{color:var(--muted);font-size:.85rem;margin-bottom:1.2rem}
+.modal-actions{display:flex;gap:.55rem;margin-top:1.25rem;justify-content:flex-end;flex-wrap:wrap}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(140%);padding:.85rem 1.4rem;border-radius:12px;font-size:.88rem;font-weight:600;z-index:300;
+  transition:transform .35s cubic-bezier(.22,1,.36,1);max-width:380px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.25);background:#fff;opacity:0;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.ok{border-left:4px solid var(--green);color:var(--green)}
+#toast.err{border-left:4px solid var(--red);color:var(--red)}
+
+.footer{background:linear-gradient(90deg,var(--navy),var(--navy-2));color:rgba(255,255,255,.7);text-align:center;padding:1.25rem 2rem;font-size:.82rem;position:relative;margin-top:2rem}
+.footer::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold),var(--sage))}
+.footer strong{color:var(--gold-l);font-family:var(--serif);font-size:1rem;font-weight:600}
+
+@media(max-width:1100px){.shell{grid-template-columns:200px 1fr}.aside{display:none}.dest-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:fixed;left:0;top:64px;bottom:0;width:240px;z-index:90;transform:translateX(-100%);transition:transform .25s;background:#fff;min-height:0}
+  .sidebar.open{transform:none}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .stats{grid-template-columns:1fr 1fr}.fgrid{grid-template-columns:1fr}.main{padding:1.25rem 1rem}
+  .topbar{padding:.8rem 1rem;flex-wrap:wrap;gap:.6rem}
+  .search-input,.search-input:focus{width:100%;min-width:140px}.search-wrap{flex:1;min-width:0}
+  .topbar-right{flex:1;flex-wrap:wrap;justify-content:flex-end}
+  .hero-banner{height:400px}.slide .art{opacity:.5;width:70%;right:-8%}.dest{padding:2.2rem 1rem 0}.houses{padding:0 1rem}
+}
+@media(max-width:520px){.dest-grid{grid-template-columns:1fr}.houses-inner{border-radius:22px}}
+
+/* INTRO — pastel-blue curtains (same transition as the flight portal) */
+#intro{
+  --sg1:#b4cdea;--sg2:#6f98c4;--sg3:#2c4a70;--cream:#f6f8fc;--mint:#d6e6f7;
+  position:fixed;inset:0;z-index:9999;display:grid;place-items:center;text-align:center;
+  color:var(--cream);cursor:pointer;overflow:hidden;
+}
+#intro .cv{position:absolute;top:0;bottom:0;width:50.3%;
+  background:radial-gradient(90% 75% at 50% 35%,var(--sg1),var(--sg2) 55%,var(--sg3));
+  transition:transform 1.4s cubic-bezier(.7,0,.2,1);}
+#intro .cv::after{content:"";position:absolute;inset:0;opacity:.12;
+  background:repeating-linear-gradient(100deg,transparent 0 46px,rgba(255,255,255,.7) 47px 48px);}
+#intro .cl{left:0}#intro .cr{right:0}
+#intro .cl::before,#intro .cr::before{content:"";position:absolute;top:8%;bottom:8%;width:1px;background:linear-gradient(transparent,var(--mint),transparent);opacity:.55}
+#intro .cl::before{right:14px}#intro .cr::before{left:14px}
+#intro.open .cl{transform:translateX(-101%)}#intro.open .cr{transform:translateX(101%)}
+#intro .ic,#intro .tap{position:relative;z-index:2;padding:0 22px}
+#intro.open .ic,#intro.open .tap,#intro.open .stars{opacity:0;transition:opacity .45s}
+#intro.gone{display:none}
+#intro .stars{position:absolute;inset:0;z-index:1;transition:opacity .45s}
+#intro .stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--cream);opacity:0;animation:tw 4.5s infinite}
+@keyframes tw{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:.7;transform:translateY(-8px)}}
+.crest{width:96px;height:96px;display:block;margin:0 auto}
+.crest circle{fill:none;stroke:var(--mint);stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 1.8s .2s ease-out forwards}
+.crest circle+circle{stroke:var(--cream);opacity:.7;animation-delay:.5s}
+.crest .pl{fill:var(--cream);fill-opacity:0;stroke:var(--cream);stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 1.6s .6s ease-out forwards,fl 1s 1.9s forwards}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes fl{to{fill-opacity:1}}
+#intro h1{
+  font-family:var(--serif);font-weight:700;text-transform:uppercase;margin:14px 0 0;
+  font-size:clamp(28px,6.6vw,66px);padding-left:.14em;
+  background:linear-gradient(90deg,var(--cream),var(--mint),#fff,var(--mint),var(--cream));background-size:250%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:ls 2.4s .9s cubic-bezier(.2,.7,.2,1) both,sh 5s 1s linear infinite;
+  filter:drop-shadow(0 6px 24px rgba(20,35,56,.55));
+}
+@keyframes ls{from{letter-spacing:.85em;opacity:0}to{letter-spacing:.2em;opacity:1}}
+@keyframes sh{to{background-position:-250% 0}}
+#intro .route{width:min(560px,86vw);margin:2px auto 0;display:block;overflow:visible}
+#intro .route .tr{fill:none;stroke:var(--mint);stroke-width:1.6;stroke-dasharray:6 8;opacity:.4}
+#intro .route .dw{fill:none;stroke:var(--cream);stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 3.2s 1.3s cubic-bezier(.5,0,.3,1) forwards}
+#intro .route circle{fill:var(--cream)}
+#intro .tag{margin:2px 0 0;color:var(--mint);letter-spacing:.42em;font-size:.8rem;font-weight:600;animation:up 1s 2.3s both}
+#intro blockquote{max-width:480px;margin:24px auto 0;font:italic 600 1.3rem/1.45 var(--serif);color:#eef4fb;animation:up 1.2s 2.9s both}
+#intro blockquote cite{display:block;font:500 .75rem var(--font);letter-spacing:.2em;text-transform:uppercase;color:var(--mint);margin-top:8px}
+#intro .tap{position:absolute;bottom:28px;left:0;right:0;font-size:.78rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mint);animation:up 1s 3.6s both}
+#intro .tap b{display:block;width:120px;height:2px;margin:10px auto 0;background:rgba(246,248,252,.2);border-radius:2px;overflow:hidden}
+#intro .tap b::after{content:"";display:block;height:100%;background:var(--cream);transform-origin:left;animation:pg 7s linear forwards}
+@keyframes pg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+@media(max-width:600px){#intro blockquote{font-size:1.1rem}}
+@media(prefers-reduced-motion:reduce){#intro *{animation-duration:.01ms!important;animation-delay:0s!important}}
+  </style>
+</head>
+<body class="intro-lock">
+<!-- INTRO SCREEN (curtain transition) -->
+<div id="intro" role="dialog" aria-label="Welcome to Luxe Inventory">
+  <i class="cv cl"></i><i class="cv cr"></i><div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="ic">
+    <svg class="crest" viewBox="0 0 96 96" aria-hidden="true">
+      <circle cx="48" cy="48" r="44" pathLength="1"/><circle cx="48" cy="48" r="37" pathLength="1"/>
+      <path class="pl" pathLength="1" d="M48 22C50 38 58 46 74 48C58 50 50 58 48 74C46 58 38 50 22 48C38 46 46 38 48 22Z"/>
+    </svg>
+    <h1>Luxe Inventory</h1>
+    <svg class="route" viewBox="0 0 560 120" aria-hidden="true">
+      <path class="tr" d="M30 100Q280-70 530 100"/>
+      <path class="dw" pathLength="1" d="M30 100Q280-70 530 100"/>
+      <circle cx="30" cy="100" r="4"/><circle cx="530" cy="100" r="4"/>
+      <g><path fill="#f6f8fc" d="M0-12C1-4 4-1 12 0C4 1 1 4 0 12C-1 4-4 1-12 0C-4-1-1-4 0-12Z"/>
+        <animateMotion dur="3.2s" begin="1.3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".5 0 .3 1" path="M30 100Q280-70 530 100"/></g>
+    </svg>
+    <p class="tag">PREMIUM COSMETICS</p>
+    <blockquote>“Beauty is bought by judgment of the eye.”<cite>William Shakespeare</cite></blockquote>
+  </div>
+  <div class="tap">Tap anywhere to enter<b></b></div>
+</div>
+
+<!-- Top bar -->
+<header class="topbar">
+  <div class="brand">
+    <button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+    <div class="brand-mark">✦</div>
+    <div><h1>Luxe Inventory</h1><small>Premium Cosmetics</small></div>
+  </div>
+  <div class="topbar-right">
+    <div class="search-wrap">
+      <span class="search-ico">⌕</span>
+      <input type="search" class="search-input" id="search-input" placeholder="Search products…" autocomplete="off" />
+      <button type="button" class="search-clear" id="search-clear" title="Clear">✕</button>
+    </div>
+    <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+    <div class="clock" id="clock">—</div>
+  </div>
+</header>
+
+<!-- HERO / FRONT PAGE -->
+<div class="hero-banner">
+  <div class="slides">
+    <div class="slide"><div class="art"></div></div>
+    <div class="slide"><div class="art"></div></div>
+    <div class="slide"><div class="art"></div></div>
+    <div class="slide"><div class="art"></div></div>
+  </div>
+  <div class="inner">
+    <span class="eyebrow rv" style="--d:.2s">Premium Cosmetics Portal</span>
+    <h2 class="rv" style="--d:.4s">Beauty, <em>beautifully</em> curated</h2>
+    <p class="rv" style="--d:.6s">Every fragrance, lipstick and serum from the houses you stock &mdash; live stock levels, GST-ready pricing and instant low-stock alerts.</p>
+    <div class="hero-cta rv" style="--d:.8s">
+      <button class="btn-hero solid" onclick="goPage('products')">Browse Products</button>
+      <button class="btn-hero line" onclick="goPage('add-product')">Add a Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<section class="dest">
+  <div class="dest-head rv" style="--d:.9s">
+    <div><small>Curated Collections</small><h2>Shop the Shelf</h2></div>
+    <p>Fragrance, colour and skincare &mdash; tap a collection to see what is in stock.</p>
+  </div>
+  <div class="dest-grid" id="coll-grid"></div>
+</section>
+<div class="houses rv" id="houses" style="--d:1.6s;display:none">
+  <div class="houses-inner" id="houses-inner"></div>
+</div>
+
+<div class="shell">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="nav-label">Overview</div>
+      <button class="nav-item active" data-page="dashboard"><span class="ico">◈</span> Dashboard</button>
+      <button class="nav-item" data-page="products"><span class="ico">◇</span> Products</button>
+      <button class="nav-item" data-page="lowstock"><span class="ico">⚠</span> Low Stock <span class="badge" id="nav-low" style="display:none">0</span></button>
+
+      <div class="nav-label">Catalog</div>
+      <button class="nav-item" data-page="types"><span class="ico">◎</span> Types</button>
+      <button class="nav-item" data-page="add-product"><span class="ico">＋</span> Add Product</button>
+      <button class="nav-item" data-page="add-type"><span class="ico">＋</span> Add Type</button>
+    </nav>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-head">
+          <div>
+            <h2>Dashboard</h2>
+            <p>Live overview · auto-refreshes every 8s</p>
+          </div>
+        </div>
+
+        <div class="refresh-bar"><div class="refresh-fill" id="refresh-fill"></div></div>
+
+        <div class="stats">
+          <div class="stat s1">
+            <div class="lbl">Products</div>
+            <div class="num" id="st-products">0</div>
+            <div class="sub" id="st-products-sub">in catalog</div>
+          </div>
+          <div class="stat s2">
+            <div class="lbl">Product Types</div>
+            <div class="num" id="st-types">0</div>
+            <div class="sub">with GST rates</div>
+          </div>
+          <div class="stat s3">
+            <div class="lbl">Low Stock</div>
+            <div class="num" id="st-low">0</div>
+            <div class="sub">below 20 units</div>
+          </div>
+          <div class="stat s4">
+            <div class="lbl">Inventory Value</div>
+            <div class="num" id="st-value">₹0</div>
+            <div class="sub">at final prices</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:var(--serif);font-size:1.25rem;margin-bottom:1rem;font-weight:600">Stock Snapshot</h3>
+        <div class="grid" id="dash-grid"></div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="page" id="page-products">
+        <div class="page-head">
+          <div>
+            <h2>All Products</h2>
+            <p>Manage inventory & stock levels</p>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="filter-bar">
+          <div class="fg">
+            <label>Type</label>
+            <select id="filter-type">
+              <option value="">All types</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Category</label>
+            <select id="filter-category">
+              <option value="">All categories</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Brand</label>
+            <select id="filter-brand">
+              <option value="">All brands</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Stock</label>
+            <select id="filter-stock">
+              <option value="">Any stock</option>
+              <option value="low">Low (&lt; 20)</option>
+              <option value="critical">Critical (&lt; 10)</option>
+              <option value="ok">Healthy (≥ 20)</option>
+              <option value="out">Out of stock</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <span class="filter-chip-active" id="filter-active-chip" style="display:none">Filtered</span>
+            <button type="button" class="btn btn-ghost btn-sm" id="filter-reset">Reset</button>
+          </div>
+        </div>
+
+        <div class="search-meta" id="search-meta" style="display:none"></div>
+        <div class="grid" id="products-grid"></div>
+        <div class="empty" id="products-empty" style="display:none">
+          <div class="big">◇</div>
+          <p id="products-empty-msg">No products yet</p>
+        </div>
+      </div>
+
+      <!-- LOW STOCK -->
+      <div class="page" id="page-lowstock">
+        <div class="page-head">
+          <div>
+            <h2>Low Stock Alert</h2>
+            <p id="lowstock-sub">Items below threshold appear here instantly</p>
+          </div>
+          <div style="display:flex;gap:0.6rem;align-items:flex-end;flex-wrap:wrap">
+            <div>
+              <label>Threshold (stock &lt; N)</label>
+              <input type="number" id="low-threshold" value="20" min="0" style="width:90px" />
+            </div>
+            <button class="btn btn-gold btn-sm" onclick="loadLowStock()">Refresh</button>
+          </div>
+        </div>
+        <div class="search-meta" id="lowstock-meta" style="display:none"></div>
+        <div class="grid" id="lowstock-grid"></div>
+        <div class="tcard" id="lowstock-table-wrap" style="margin-top:1.25rem">
+          <table>
+            <thead><tr><th>ID</th><th>Product</th><th>Brand</th><th>Type</th><th>Stock</th><th>Final ₹</th><th></th></tr></thead>
+            <tbody id="lowstock-body"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="lowstock-empty" style="display:none">
+          <div class="big">✓</div>
+          <p>All stock levels healthy — nothing below threshold</p>
+        </div>
+      </div>
+
+      <!-- TYPES -->
+      <div class="page" id="page-types">
+        <div class="page-head">
+          <div>
+            <h2>Product Types</h2>
+            <p>Attribute labels & GST configuration</p>
+          </div>
+        </div>
+        <div class="tcard">
+          <table>
+            <thead><tr><th>Name</th><th>Attribute</th><th>GST %</th><th></th></tr></thead>
+            <tbody id="types-body"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="types-empty" style="display:none">
+          <div class="big">◎</div>
+          <p>No types defined</p>
+        </div>
+      </div>
+
+      <!-- ADD PRODUCT -->
+      <div class="page" id="page-add-product">
+        <div class="page-head">
+          <div>
+            <h2>Add Product</h2>
+            <p>Register a new catalog item</p>
+          </div>
+        </div>
+        <div class="fcard">
+          <form onsubmit="return addProduct(event)">
+            <div class="fgrid">
+              <div><label>Product ID *</label><input type="number" name="id" required min="1" placeholder="105" /></div>
+              <div><label>Name *</label><input type="text" name="name" required placeholder="Matte Lipstick" /></div>
+              <div><label>Brand *</label><input type="text" name="brand" required placeholder="Lakme" /></div>
+              <div><label>Category *</label><input type="text" name="category" required placeholder="Lip Cosmetics" /></div>
+              <div><label>Type *</label><select name="type" id="add-type-select" required></select></div>
+              <div><label>Attribute Value</label><input type="text" name="attr" placeholder="Ruby Red" /></div>
+              <div><label>Base Price ₹ *</label><input type="number" name="price" required min="0" step="0.01" placeholder="450" /></div>
+              <div><label>Initial Stock *</label><input type="number" name="stock" required min="0" placeholder="50" /></div>
+            </div>
+            <button type="submit" class="btn btn-gold">Add to Catalog</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADD TYPE -->
+      <div class="page" id="page-add-type">
+        <div class="page-head">
+          <div>
+            <h2>Add Type</h2>
+            <p>Define a product classification</p>
+          </div>
+        </div>
+        <div class="fcard">
+          <form onsubmit="return addType(event)">
+            <div class="fgrid">
+              <div><label>Type Name *</label><input type="text" name="name" required placeholder="Haircare" /></div>
+              <div><label>Attribute Label *</label><input type="text" name="label" required placeholder="Hair Type" /></div>
+              <div class="full"><label>GST % *</label><input type="number" name="gst" required min="0" step="0.01" placeholder="18" style="max-width:160px" /></div>
+            </div>
+            <button type="submit" class="btn btn-gold">Create Type</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live activity feed -->
+    <aside class="aside">
+      <h3>Live Activity</h3>
+      <p class="sub">Real-time events & updates</p>
+      <div class="feed" id="feed">
+        <div class="feed-item info">
+          <div class="time">just now</div>
+          <div class="msg">System connected · monitoring inventory</div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+
+  <div class="footer">
+    <strong>Luxe Inventory</strong> &nbsp;·&nbsp; Premium Cosmetics &nbsp;·&nbsp; © 2026 Inventory Portal
+  </div>
+
+  <!-- Transaction modal -->
+  <div class="overlay" id="txn-modal">
+    <div class="modal">
+      <h3 id="txn-title">Adjust Stock</h3>
+      <p class="sub" id="txn-info"></p>
+      <div>
+        <label>Quantity</label>
+        <input type="number" id="txn-qty" min="1" value="1" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeTxn()">Cancel</button>
+        <button class="btn btn-green" onclick="doTxn(1)">Restock</button>
+        <button class="btn btn-amber" onclick="doTxn(-1)">Sell</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit type modal -->
+  <div class="overlay" id="edit-modal">
+    <div class="modal">
+      <h3>Edit Type</h3>
+      <form onsubmit="return saveEdit(event)">
+        <input type="hidden" id="edit-name" />
+        <div style="margin-bottom:1rem">
+          <label>Attribute Label</label>
+          <input type="text" id="edit-label" required />
+        </div>
+        <div style="margin-bottom:0.5rem">
+          <label>GST %</label>
+          <input type="number" id="edit-gst" required min="0" step="0.01" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeEdit()">Cancel</button>
+          <button type="submit" class="btn btn-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    let products = [], types = [], txnId = null;
+    let feedLog = [];
+    let searchQuery = "";
+    let filters = { type: "", category: "", brand: "", stock: "" };
+    const REFRESH_MS = 8000;
+    let refreshTimer = null;
+    let refreshProgress = 0;
+
+    // ── Product artwork (original illustrations, generated per product) ──
+    const LIQ = ["#7fa6cf", "#d6b36a", "#d98f9a", "#5a82b0", "#c9a27a", "#9bbfd0"];
+    function hstr(s) { let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; }
+    function kindOf(p) {
+      const t = [p.name, p.category, p.type, p.label].join(" ").toLowerCase();
+      if (/perfume|fragrance|parfum|\beau\b|cologne|scent|attar|musk/.test(t)) return "perfume";
+      if (/lip|gloss|balm/.test(t)) return "lipstick";
+      if (/nail|polish|enamel/.test(t)) return "nail";
+      if (/mascara|liner|kajal|brow|eye/.test(t)) return "mascara";
+      if (/serum|dropper|oil|essence|ampoule/.test(t)) return "serum";
+      if (/foundation|powder|blush|compact|highlight|conceal|bronzer|face|cushion/.test(t)) return "compact";
+      if (/cream|moistur|lotion|mask|skin|night|spf|sunscreen/.test(t)) return "jar";
+      if (/hair|shampoo|condition|wash|spray|body/.test(t)) return "pump";
+      return ["perfume", "serum", "jar", "lipstick"][hstr(t) % 4];
+    }
+    function artSVG(kind, ci) {
+      const c = LIQ[ci % LIQ.length], G = "#c9a85c", GD = "#a8883f";
+      const GL = "rgba(255,255,255,.58)", GS = "rgba(31,47,69,.32)", HL = "rgba(255,255,255,.7)";
+      const sh = '<ellipse cx="150" cy="163" rx="74" ry="7" fill="rgba(0,0,0,.2)"/>';
+      let o = "";
+      if (kind === "perfume") o =
+        `<rect x="105" y="62" width="90" height="98" rx="14" fill="${GL}" stroke="${GS}" stroke-width="1.5"/>
+         <rect x="111" y="94" width="78" height="60" rx="10" fill="${c}" opacity=".88"/>
+         <rect x="138" y="46" width="24" height="18" fill="${GD}"/>
+         <rect x="128" y="18" width="44" height="30" rx="5" fill="${G}"/><rect x="128" y="18" width="44" height="6" rx="3" fill="${HL}" opacity=".5"/>
+         <rect x="124" y="112" width="52" height="28" rx="3" fill="rgba(255,255,255,.88)"/>
+         <rect x="132" y="120" width="36" height="3" rx="1.5" fill="${GD}"/><rect x="138" y="128" width="24" height="2.5" rx="1.2" fill="${GS}"/>
+         <rect x="113" y="70" width="8" height="78" rx="4" fill="${HL}"/>`;
+      else if (kind === "lipstick") o =
+        `<rect x="124" y="98" width="48" height="62" rx="5" fill="${GD}"/><rect x="124" y="98" width="48" height="10" fill="${G}"/>
+         <rect x="130" y="62" width="36" height="38" fill="${c}"/>
+         <path d="M130 62 L166 62 L166 48 Q148 28 130 52 Z" fill="${c}"/><path d="M134 60 L134 52 Q142 40 150 42" stroke="${HL}" stroke-width="3" fill="none" stroke-linecap="round"/>
+         <rect x="198" y="82" width="38" height="78" rx="5" fill="${G}"/><rect x="198" y="82" width="38" height="12" rx="4" fill="${GD}"/>
+         <rect x="204" y="100" width="6" height="52" rx="3" fill="${HL}"/><rect x="130" y="112" width="6" height="40" rx="3" fill="${HL}" opacity=".6"/>`;
+      else if (kind === "jar") o =
+        `<rect x="95" y="76" width="110" height="28" rx="8" fill="${G}"/><rect x="95" y="76" width="110" height="7" rx="3.5" fill="${HL}" opacity=".5"/>
+         <rect x="100" y="102" width="100" height="56" rx="14" fill="${GL}" stroke="${GS}" stroke-width="1.5"/>
+         <rect x="107" y="110" width="86" height="22" rx="9" fill="${c}" opacity=".85"/>
+         <rect x="120" y="138" width="60" height="12" rx="3" fill="rgba(255,255,255,.88)"/><rect x="128" y="142" width="44" height="2.5" rx="1.2" fill="${GD}"/>
+         <rect x="106" y="108" width="7" height="42" rx="3.5" fill="${HL}"/>`;
+      else if (kind === "serum") o =
+        `<ellipse cx="150" cy="38" rx="15" ry="27" fill="${c}"/><ellipse cx="144" cy="28" rx="3.5" ry="9" fill="${HL}"/>
+         <rect x="134" y="58" width="32" height="18" rx="3" fill="${G}"/><rect x="134" y="58" width="32" height="5" fill="${HL}" opacity=".45"/>
+         <path d="M115 100 Q115 76 134 76 L166 76 Q185 76 185 100 L185 148 Q185 160 173 160 L127 160 Q115 160 115 148 Z" fill="${GL}" stroke="${GS}" stroke-width="1.5"/>
+         <path d="M118 108 L182 108 L182 148 Q182 157 173 157 L127 157 Q118 157 118 148 Z" fill="${c}" opacity=".85"/>
+         <rect x="130" y="120" width="40" height="22" rx="3" fill="rgba(255,255,255,.88)"/><rect x="136" y="127" width="28" height="3" rx="1.5" fill="${GD}"/>
+         <rect x="122" y="88" width="7" height="60" rx="3.5" fill="${HL}"/>`;
+      else if (kind === "mascara") o =
+        `<rect x="136" y="54" width="28" height="106" rx="9" fill="${c}"/><rect x="136" y="100" width="28" height="9" fill="${G}"/>
+         <rect x="140" y="28" width="20" height="28" rx="6" fill="${G}"/><rect x="143" y="62" width="5" height="90" rx="2.5" fill="${HL}" opacity=".6"/>
+         <rect x="205" y="74" width="4" height="86" rx="2" fill="${GD}"/>
+         <rect x="199" y="52" width="16" height="36" rx="8" fill="#1f2f45"/><path d="M199 62 h-6 M199 70 h-6 M199 78 h-6 M215 62 h6 M215 70 h6 M215 78 h6" stroke="#1f2f45" stroke-width="2" stroke-linecap="round"/>`;
+      else if (kind === "compact") o =
+        `<rect x="92" y="20" width="116" height="84" rx="16" fill="${G}"/><rect x="100" y="28" width="100" height="68" rx="11" fill="rgba(255,255,255,.78)" stroke="${GS}" stroke-width="1"/>
+         <path d="M112 36 L134 36 L112 70 Z" fill="${HL}"/>
+         <ellipse cx="150" cy="134" rx="76" ry="24" fill="${GD}"/><ellipse cx="150" cy="128" rx="76" ry="24" fill="${G}"/>
+         <ellipse cx="150" cy="127" rx="62" ry="17" fill="${c}"/><ellipse cx="136" cy="122" rx="22" ry="5" fill="${HL}" opacity=".5"/>`;
+      else if (kind === "nail") o =
+        `<rect x="134" y="26" width="32" height="56" rx="8" fill="${G}"/><rect x="134" y="26" width="32" height="8" rx="4" fill="${HL}" opacity=".5"/>
+         <rect x="141" y="80" width="18" height="14" fill="${GD}"/>
+         <rect x="112" y="92" width="76" height="68" rx="14" fill="${c}"/><rect x="118" y="98" width="8" height="52" rx="4" fill="${HL}"/>
+         <rect x="130" y="116" width="40" height="22" rx="3" fill="rgba(255,255,255,.88)"/><rect x="136" y="123" width="28" height="3" rx="1.5" fill="${GD}"/>`;
+      else o =
+        `<rect x="140" y="52" width="20" height="16" fill="${GD}"/>
+         <rect x="130" y="30" width="38" height="24" rx="5" fill="${G}"/><path d="M166 38 h20 q6 0 6 6 v2 h-26 z" fill="${G}"/>
+         <rect x="112" y="66" width="76" height="94" rx="16" fill="${GL}" stroke="${GS}" stroke-width="1.5"/>
+         <rect x="117" y="96" width="66" height="60" rx="12" fill="${c}" opacity=".85"/>
+         <rect x="126" y="112" width="48" height="24" rx="3" fill="rgba(255,255,255,.88)"/><rect x="133" y="120" width="34" height="3" rx="1.5" fill="${GD}"/>
+         <rect x="120" y="74" width="7" height="76" rx="3.5" fill="${HL}"/>`;
+      return `<svg viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${sh}${o}</svg>`;
+    }
+
+    // ── Front page: slideshow, collections, houses ──
+    function goPage(page) {
+      document.querySelector('[data-page="' + page + '"]').click();
+      document.querySelector(".shell").scrollIntoView({ behavior: "smooth" });
+    }
+    function browse(q) {
+      searchInput.value = q;
+      applySearch();
+      goPage("products");
+    }
+    (function buildFrontPage() {
+      const heroKinds = [["perfume", 1], ["lipstick", 2], ["serum", 0], ["compact", 1]];
+      document.querySelectorAll(".slide .art").forEach((el, i) => { el.innerHTML = artSVG(heroKinds[i][0], heroKinds[i][1]); });
+      const colls = [
+        { t: "Fragrance", s: "Eaux & parfums", k: "perfume", ci: 1, q: "perfume" },
+        { t: "Lips", s: "Colour & care", k: "lipstick", ci: 2, q: "lip" },
+        { t: "Skincare", s: "Serums & creams", k: "serum", ci: 0, q: "skin" },
+        { t: "Face & Eyes", s: "Base & definition", k: "compact", ci: 4, q: "face" }
+      ];
+      document.getElementById("coll-grid").innerHTML = colls.map((c, i) => `
+        <article class="dest-card c${i} rv" style="--d:${1.0 + i * 0.15}s" onclick="browse('${c.q}')">
+          <div class="art">${artSVG(c.k, c.ci)}</div>
+          <div class="cap"><b>${c.t}</b><small>${c.s}</small></div>
+        </article>`).join("");
+    })();
+    function renderBrands() {
+      const brands = uniqueSorted(products.map(p => p.brand));
+      const box = document.getElementById("houses");
+      if (!brands.length) { box.style.display = "none"; return; }
+      box.style.display = "";
+      document.getElementById("houses-inner").innerHTML = "<small>Houses in your catalog</small>" +
+        brands.map(b => `<span onclick="browse('${esc(b).replace(/'/g, "")}')">${esc(b)}</span>`).join("");
+    }
+
+
+    // ── Live clock ──
+    function tickClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, "0");
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const s = String(now.getSeconds()).padStart(2, "0");
+      const d = now.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
+      document.getElementById("clock").innerHTML = `<strong>${h}:${m}:${s}</strong> · ${d}`;
+    }
+    setInterval(tickClock, 1000);
+    tickClock();
+
+    // ── Animated counter ──
+    function animateNum(el, target, prefix = "", suffix = "", duration = 600) {
+      const start = parseFloat(el.dataset.val || "0") || 0;
+      const end = typeof target === "number" ? target : parseFloat(String(target).replace(/[^\d.-]/g, "")) || 0;
+      el.dataset.val = end;
+      const t0 = performance.now();
+      function frame(t) {
+        const p = Math.min(1, (t - t0) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const cur = start + (end - start) * eased;
+        if (suffix === "" && prefix === "₹") {
+          el.textContent = prefix + Math.round(cur).toLocaleString("en-IN");
+        } else {
+          el.textContent = prefix + Math.round(cur) + suffix;
+        }
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // ── API ──
+    async function api(path, method = "GET", params = null) {
+      let url = path;
+      const opts = { method };
+      if (method === "GET" && params) url += "?" + new URLSearchParams(params);
+      else if (method !== "GET" && params) {
+        opts.headers = { "Content-Type": "application/x-www-form-urlencoded" };
+        opts.body = new URLSearchParams(params).toString();
+      }
+      const res = await fetch(url, opts);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      return data;
+    }
+
+    function toast(msg, ok = true) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.className = (ok ? "ok" : "err") + " show";
+      setTimeout(() => el.classList.remove("show"), 3200);
+    }
+
+    function esc(s) {
+      return s == null ? "" : String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    function feed(msg, type = "info") {
+      const now = new Date();
+      const time = String(now.getHours()).padStart(2,"0") + ":" +
+                  String(now.getMinutes()).padStart(2,"0") + ":" +
+                  String(now.getSeconds()).padStart(2,"0");
+      feedLog.unshift({ time, msg, type });
+      if (feedLog.length > 40) feedLog.pop();
+      renderFeed();
+    }
+
+    function renderFeed() {
+      document.getElementById("feed").innerHTML = feedLog.map(f => `
+        <div class="feed-item ${f.type}">
+          <div class="time">${f.time}</div>
+          <div class="msg">${esc(f.msg)}</div>
+        </div>`).join("");
+    }
+
+    // ── Nav ──
+    document.querySelectorAll(".nav-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("page-" + btn.dataset.page).classList.add("active");
+        document.getElementById("sidebar").classList.remove("open");
+        if (btn.dataset.page === "lowstock") loadLowStock();
+        if (btn.dataset.page === "add-product") fillTypeSelect();
+      });
+    });
+
+    // ── Load + auto-refresh ──
+    async function loadAll(silent = false) {
+      try {
+        const [prods, typs] = await Promise.all([api("/api/products"), api("/api/types")]);
+        const changed = JSON.stringify(prods) !== JSON.stringify(products) ||
+                        JSON.stringify(typs) !== JSON.stringify(types);
+        products = prods;
+        types = typs;
+        renderAll();
+        if (!silent) feed("Inventory synced · " + products.length + " products", "info");
+        else if (changed) feed("Data updated from server", "ok");
+      } catch (e) {
+        if (!silent) toast(e.message, false);
+        feed("Sync failed: " + e.message, "err");
+      }
+    }
+
+    function startRefreshLoop() {
+      refreshProgress = 0;
+      if (refreshTimer) clearInterval(refreshTimer);
+      const step = 100;
+      refreshTimer = setInterval(() => {
+        refreshProgress += step;
+        const pct = Math.min(100, (refreshProgress / REFRESH_MS) * 100);
+        document.getElementById("refresh-fill").style.width = pct + "%";
+        if (refreshProgress >= REFRESH_MS) {
+          refreshProgress = 0;
+          document.getElementById("refresh-fill").style.width = "0%";
+          loadAll(true);
+        }
+      }, step);
+    }
+
+    function renderAll() {
+      populateFilterOptions();
+      renderBrands();
+      renderProducts();
+      renderDash();
+      renderTypes();
+      updateStats();
+      fillTypeSelect();
+      // Keep Low Stock page live if user is viewing it
+      if (document.getElementById("page-lowstock").classList.contains("active")) {
+        loadLowStock(true);
+      }
+    }
+
+    function updateStats() {
+      const low = products.filter(p => p.stock < 20).length;
+      const val = products.reduce((s, p) => s + p.finalPrice * p.stock, 0);
+      animateNum(document.getElementById("st-products"), products.length);
+      animateNum(document.getElementById("st-types"), types.length);
+      animateNum(document.getElementById("st-low"), low);
+      animateNum(document.getElementById("st-value"), val, "₹");
+      document.getElementById("st-products-sub").textContent =
+        products.length === 1 ? "item in catalog" : "items in catalog";
+
+      const badge = document.getElementById("nav-low");
+      if (low > 0) {
+        badge.style.display = "";
+        badge.textContent = low;
+      } else {
+        badge.style.display = "none";
+      }
+    }
+
+    // ── Product card ──
+    function stockLevel(stock) {
+      if (stock < 10) return { cls: "low", pct: Math.min(100, stock * 5), color: "var(--red)" };
+      if (stock < 20) return { cls: "warn", pct: Math.min(100, stock * 3), color: "var(--amber)" };
+      return { cls: "ok", pct: Math.min(100, 40 + stock * 0.4), color: "var(--green)" };
+    }
+
+    function productCard(p) {
+      const sl = stockLevel(p.stock);
+      return `
+        <div class="pcard">
+          <div class="pcard-art t${hstr(p.name) % 4}">${artSVG(kindOf(p), hstr(p.brand + p.name) % LIQ.length)}<span class="tag">${esc(p.brand)}</span></div>
+          <div class="pcard-top">
+            <div class="pcard-name">${esc(p.name)}</div>
+            <div class="pcard-brand">${esc(p.brand)} · #${p.id}</div>
+            <div class="chips">
+              <span class="chip gold">${esc(p.type)}</span>
+              <span class="chip rose">${esc(p.category)}</span>
+              ${p.attr ? `<span class="chip">${esc(p.label || "")}: ${esc(p.attr)}</span>` : ""}
+            </div>
+          </div>
+          <div class="pcard-body">
+            <div class="fld">
+              <div class="k">Stock</div>
+              <div class="v ${sl.cls}">${p.stock}</div>
+              <div class="stock-bar"><div class="stock-bar-fill" style="width:${sl.pct}%;background:${sl.color}"></div></div>
+            </div>
+            <div class="fld"><div class="k">Base</div><div class="v">₹${p.price.toFixed(2)}</div></div>
+            <div class="fld"><div class="k">Final</div><div class="v">₹${p.finalPrice.toFixed(2)}</div></div>
+            <div class="fld"><div class="k">Value</div><div class="v">₹${(p.finalPrice * p.stock).toFixed(0)}</div></div>
+          </div>
+          <div class="pcard-foot" style="display:flex;gap:0.45rem">
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openTxn(${p.id})">Adjust Stock</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button>
+          </div>
+        </div>`;
+    }
+
+    async function deleteProduct(id) {
+      const p = products.find(x => x.id === id);
+      const label = p ? p.name : ("#" + id);
+      if (!confirm('Delete product "' + label + '"? This cannot be undone.')) return;
+      try {
+        await api("/api/products/delete", "POST", { id: id });
+        toast("Product deleted");
+        feed("Deleted product: " + label, "warn");
+        await loadAll(true);
+      } catch (err) {
+        toast(err.message, false);
+        feed(err.message, "err");
+      }
+    }
+
+    function hasActiveFilters() {
+      return !!(searchQuery.trim() || filters.type || filters.category || filters.brand || filters.stock);
+    }
+
+    function filteredProducts() {
+      const q = searchQuery.trim().toLowerCase();
+      return products.filter(p => {
+        if (filters.type && String(p.type).toLowerCase() !== filters.type.toLowerCase()) return false;
+        if (filters.category && String(p.category).toLowerCase() !== filters.category.toLowerCase()) return false;
+        if (filters.brand && String(p.brand).toLowerCase() !== filters.brand.toLowerCase()) return false;
+        if (filters.stock === "low" && p.stock >= 20) return false;
+        if (filters.stock === "critical" && p.stock >= 10) return false;
+        if (filters.stock === "ok" && p.stock < 20) return false;
+        if (filters.stock === "out" && p.stock !== 0) return false;
+        if (q) {
+          const hay = [
+            p.id, p.name, p.brand, p.category, p.type, p.label, p.attr,
+            p.price, p.finalPrice, p.stock
+          ].map(x => String(x == null ? "" : x).toLowerCase()).join(" ");
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function uniqueSorted(arr) {
+      return [...new Set(arr.filter(Boolean))].sort((a, b) =>
+        String(a).localeCompare(String(b), undefined, { sensitivity: "base" })
+      );
+    }
+
+    function populateFilterOptions() {
+      const typeSel = document.getElementById("filter-type");
+      const catSel = document.getElementById("filter-category");
+      const brandSel = document.getElementById("filter-brand");
+      if (!typeSel) return;
+
+      const keep = { type: filters.type, category: filters.category, brand: filters.brand };
+
+      const typesList = uniqueSorted(products.map(p => p.type));
+      const cats = uniqueSorted(products.map(p => p.category));
+      const brands = uniqueSorted(products.map(p => p.brand));
+
+      typeSel.innerHTML = '<option value="">All types</option>' +
+        typesList.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+      catSel.innerHTML = '<option value="">All categories</option>' +
+        cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+      brandSel.innerHTML = '<option value="">All brands</option>' +
+        brands.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join("");
+
+      typeSel.value = keep.type;
+      catSel.value = keep.category;
+      brandSel.value = keep.brand;
+      if (typeSel.value !== keep.type) filters.type = "";
+      if (catSel.value !== keep.category) filters.category = "";
+      if (brandSel.value !== keep.brand) filters.brand = "";
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("products-grid");
+      const empty = document.getElementById("products-empty");
+      const meta = document.getElementById("search-meta");
+      const emptyMsg = document.getElementById("products-empty-msg");
+      const chip = document.getElementById("filter-active-chip");
+      const list = filteredProducts();
+      const active = hasActiveFilters();
+
+      if (chip) chip.style.display = active ? "" : "none";
+
+      if (active) {
+        meta.style.display = "block";
+        const parts = [];
+        if (searchQuery.trim()) parts.push(`“${esc(searchQuery.trim())}”`);
+        if (filters.type) parts.push("type " + esc(filters.type));
+        if (filters.category) parts.push("category " + esc(filters.category));
+        if (filters.brand) parts.push("brand " + esc(filters.brand));
+        if (filters.stock) {
+          const labels = { low: "low stock", critical: "critical stock", ok: "healthy stock", out: "out of stock" };
+          parts.push(labels[filters.stock] || filters.stock);
+        }
+        meta.innerHTML = list.length
+          ? `Showing <strong>${list.length}</strong> of ${products.length}` + (parts.length ? " · " + parts.join(" · ") : "")
+          : `No matches` + (parts.length ? " · " + parts.join(" · ") : "");
+      } else {
+        meta.style.display = "none";
+      }
+
+      if (!list.length) {
+        grid.innerHTML = "";
+        empty.style.display = "block";
+        emptyMsg.textContent = active
+          ? "No products match your search / filters"
+          : "No products yet";
+        return;
+      }
+      empty.style.display = "none";
+      grid.innerHTML = list.map(productCard).join("");
+    }
+
+    function renderDash() {
+      const list = filteredProducts();
+      document.getElementById("dash-grid").innerHTML =
+        list.map(productCard).join("") ||
+        `<div class="empty"><div class="big">◇</div><p>${hasActiveFilters() ? "No matches" : "No products yet"}</p></div>`;
+    }
+
+    // ── Search ──
+    const searchInput = document.getElementById("search-input");
+    const searchClear = document.getElementById("search-clear");
+
+    function applySearch() {
+      searchQuery = searchInput.value || "";
+      searchClear.classList.toggle("show", searchQuery.length > 0);
+      renderProducts();
+      renderDash();
+    }
+
+    searchInput.addEventListener("input", applySearch);
+    searchInput.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        searchInput.value = "";
+        applySearch();
+        searchInput.blur();
+      }
+    });
+    searchClear.addEventListener("click", () => {
+      searchInput.value = "";
+      applySearch();
+      searchInput.focus();
+    });
+
+    // Ctrl/Cmd+K focuses search
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+    });
+
+    // ── Filters ──
+    function applyFilters() {
+      filters.type = document.getElementById("filter-type").value;
+      filters.category = document.getElementById("filter-category").value;
+      filters.brand = document.getElementById("filter-brand").value;
+      filters.stock = document.getElementById("filter-stock").value;
+      renderProducts();
+      renderDash();
+    }
+
+    ["filter-type", "filter-category", "filter-brand", "filter-stock"].forEach(id => {
+      document.getElementById(id).addEventListener("change", applyFilters);
+    });
+
+    document.getElementById("filter-reset").addEventListener("click", () => {
+      filters = { type: "", category: "", brand: "", stock: "" };
+      document.getElementById("filter-type").value = "";
+      document.getElementById("filter-category").value = "";
+      document.getElementById("filter-brand").value = "";
+      document.getElementById("filter-stock").value = "";
+      searchInput.value = "";
+      searchQuery = "";
+      searchClear.classList.remove("show");
+      renderProducts();
+      renderDash();
+    });
+
+    async function addProduct(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+      try {
+        await api("/api/products", "POST", data);
+        toast("Product added to catalog");
+        feed("Added product: " + data.name, "ok");
+        e.target.reset();
+        await loadAll(true);
+        document.querySelector('[data-page="products"]').click();
+      } catch (err) { toast(err.message, false); feed(err.message, "err"); }
+      return false;
+    }
+
+    // ── Types ──
+    function renderTypes() {
+      const tbody = document.getElementById("types-body");
+      const empty = document.getElementById("types-empty");
+      if (!types.length) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
+      empty.style.display = "none";
+      tbody.innerHTML = types.map(t => `
+        <tr>
+          <td><strong>${esc(t.name)}</strong></td>
+          <td>${esc(t.label)}</td>
+          <td>${t.gst}%</td>
+          <td style="display:flex;gap:0.4rem">
+            <button class="btn btn-ghost btn-sm" onclick="openEdit('${esc(t.name)}','${esc(t.label)}',${t.gst})">Edit</button>
+            <button class="btn btn-danger" onclick="deleteType('${esc(t.name)}')">Delete</button>
+          </td>
+        </tr>`).join("");
+    }
+
+    function fillTypeSelect() {
+      const sel = document.getElementById("add-type-select");
+      sel.innerHTML = types.map(t =>
+        `<option value="${esc(t.name)}">${esc(t.name)} · ${t.gst}% GST</option>`
+      ).join("") || '<option value="">No types</option>';
+    }
+
+    async function addType(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+      try {
+        await api("/api/types", "POST", data);
+        toast("Type created");
+        feed("New type: " + data.name + " (" + data.gst + "% GST)", "ok");
+        e.target.reset();
+        await loadAll(true);
+        document.querySelector('[data-page="types"]').click();
+      } catch (err) { toast(err.message, false); feed(err.message, "err"); }
+      return false;
+    }
+
+    function openEdit(name, label, gst) {
+      document.getElementById("edit-name").value = name;
+      document.getElementById("edit-label").value = label;
+      document.getElementById("edit-gst").value = gst;
+      document.getElementById("edit-modal").classList.add("open");
+    }
+    function closeEdit() { document.getElementById("edit-modal").classList.remove("open"); }
+
+    async function saveEdit(e) {
+      e.preventDefault();
+      const name = document.getElementById("edit-name").value;
+      try {
+        await api("/api/types/edit", "POST", {
+          name,
+          label: document.getElementById("edit-label").value,
+          gst: document.getElementById("edit-gst").value
+        });
+        toast("Type updated");
+        feed("Updated type: " + name, "ok");
+        closeEdit();
+        await loadAll(true);
+      } catch (err) { toast(err.message, false); feed(err.message, "err"); }
+      return false;
+    }
+
+    async function deleteType(name) {
+      if (!confirm(`Delete type "${name}"?`)) return;
+      try {
+        await api("/api/types/delete", "POST", { name });
+        toast("Type deleted");
+        feed("Deleted type: " + name, "warn");
+        await loadAll(true);
+      } catch (err) { toast(err.message, false); feed(err.message, "err"); }
+    }
+
+    // ── Transaction ──
+    function openTxn(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      txnId = id;
+      document.getElementById("txn-title").textContent = p.name;
+      document.getElementById("txn-info").textContent =
+        `Current stock: ${p.stock}  ·  Final: ₹${p.finalPrice.toFixed(2)}`;
+      document.getElementById("txn-qty").value = 1;
+      document.getElementById("txn-modal").classList.add("open");
+    }
+    function closeTxn() {
+      document.getElementById("txn-modal").classList.remove("open");
+      txnId = null;
+    }
+
+    async function doTxn(sign) {
+      const qty = parseInt(document.getElementById("txn-qty").value, 10);
+      if (!qty || qty < 1) { toast("Enter a valid quantity", false); return; }
+      const p = products.find(x => x.id === txnId);
+      try {
+        const res = await api("/api/transaction", "POST", { id: txnId, qty: sign * qty });
+        const action = sign > 0 ? "Restocked" : "Sold";
+        toast(`${action} → stock ${res.stock}`);
+        feed(`${action} ${qty}× ${p ? p.name : "#" + txnId} → ${res.stock} left`, sign > 0 ? "ok" : "warn");
+        closeTxn();
+        await loadAll(true);
+      } catch (err) { toast(err.message, false); feed(err.message, "err"); }
+    }
+
+    // ── Low stock — shows every item below threshold on screen ──
+    async function loadLowStock(silent = false) {
+      const threshold = parseInt(document.getElementById("low-threshold").value, 10) || 20;
+      try {
+        // Prefer live local data so UI is instant; fall back to API
+        let list = products.filter(p => p.stock < threshold);
+        try {
+          const fromApi = await api("/api/lowstock", "GET", { threshold });
+          if (Array.isArray(fromApi)) list = fromApi;
+        } catch (_) { /* use local list */ }
+
+        // Sort: lowest stock first
+        list = list.slice().sort((a, b) => a.stock - b.stock);
+
+        const grid = document.getElementById("lowstock-grid");
+        const tbody = document.getElementById("lowstock-body");
+        const empty = document.getElementById("lowstock-empty");
+        const meta = document.getElementById("lowstock-meta");
+        const tableWrap = document.getElementById("lowstock-table-wrap");
+        const sub = document.getElementById("lowstock-sub");
+
+        if (!list.length) {
+          grid.innerHTML = "";
+          tbody.innerHTML = "";
+          empty.style.display = "block";
+          tableWrap.style.display = "none";
+          meta.style.display = "none";
+          sub.textContent = "Nothing below " + threshold + " units";
+          if (!silent) feed("Low-stock: all clear (threshold " + threshold + ")", "ok");
+          return;
+        }
+
+        empty.style.display = "none";
+        tableWrap.style.display = "";
+        meta.style.display = "block";
+        meta.innerHTML = `<strong>${list.length}</strong> product${list.length === 1 ? "" : "s"} with stock below <strong>${threshold}</strong>`;
+        sub.textContent = list.length + " item" + (list.length === 1 ? "" : "s") + " need attention";
+
+        // Cards on screen
+        grid.innerHTML = list.map(productCard).join("");
+
+        // Table list
+        tbody.innerHTML = list.map(p => `
+          <tr>
+            <td>${p.id}</td>
+            <td><strong>${esc(p.name)}</strong></td>
+            <td>${esc(p.brand)}</td>
+            <td>${esc(p.type)}</td>
+            <td style="color:var(--red);font-weight:600">${p.stock}</td>
+            <td>₹${p.finalPrice.toFixed(2)}</td>
+            <td style="display:flex;gap:0.35rem">
+              <button class="btn btn-ghost btn-sm" onclick="openTxn(${p.id})">Restock</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button>
+            </td>
+          </tr>`).join("");
+
+        if (!silent) feed("Low-stock: " + list.length + " item(s) below " + threshold, "warn");
+      } catch (e) {
+        if (!silent) toast(e.message, false);
+        feed(e.message, "err");
+      }
+    }
+
+    // Re-render low stock when threshold changes
+    document.getElementById("low-threshold").addEventListener("change", () => loadLowStock(true));
+    document.getElementById("low-threshold").addEventListener("input", () => {
+      clearTimeout(window._lowDebounce);
+      window._lowDebounce = setTimeout(() => loadLowStock(true), 300);
+    });
+
+    // Modals
+    document.querySelectorAll(".overlay").forEach(o => {
+      o.addEventListener("click", e => { if (e.target === o) o.classList.remove("open"); });
+    });
+
+    // Boot
+    loadAll().then(() => startRefreshLoop());
+
+    // ── Intro: pastel-blue curtains open on tap, key press, or after a few seconds ──
+    (function () {
+      const intro = document.getElementById("intro"), st = document.getElementById("stars");
+      st.innerHTML = Array.from({ length: 34 }, () => '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;top:' + (Math.random() * 100).toFixed(1) + '%;animation-delay:' + (Math.random() * 4.5).toFixed(1) + 's"></i>').join("");
+      let opened = false;
+      const enter = () => {
+        if (opened) return; opened = true;
+        intro.classList.add("open");
+        setTimeout(() => document.body.classList.add("ready"), 500);      // hero + panels reveal as the curtains part
+        setTimeout(() => { intro.classList.add("gone"); intro.remove(); document.body.classList.remove("intro-lock"); }, 1500);
+      };
+      intro.addEventListener("click", enter);
+      document.addEventListener("keydown", enter, { once: true });
+      setTimeout(enter, 7200);
+    })();
+  </script>
+</body>
+</html>
